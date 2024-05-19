@@ -11,7 +11,7 @@ import main.Game;
 public class TrajectoryLine {
     
 	private Ball ball;
-	private Color currentColor;
+	private Color newColor;
 	
 	private int xVel, yVel;
 
@@ -51,18 +51,15 @@ public class TrajectoryLine {
 		
 		initialTrajectoryLine(xVel, yVel);
 		
-		while(count < 20) {
+		while(count < 2) {
 			
 			reverseYVel();
 			
 			Point lastPoint = trajectoryPoints.get(trajectoryPoints.size() - 1); // gets the last point
 			
 			// alternate y coordinate
-			if(lastPoint.y == Game.GAME_HEIGHT) {
-				nextY = 0;
-			} else if(lastPoint.y == 0) {
-				nextY = Game.GAME_HEIGHT;
-			}
+			nextY = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT;
+
 			
 			// calculate x coordinate
 			t = (nextY - lastPoint.y) / yVel;   
@@ -70,27 +67,28 @@ public class TrajectoryLine {
 	        	        
 	        // check if it intersects paddle:
 	       if(nextX >= 970) {
-	    	   
+	    
 	    	   // calculate coordinate on paddle axis using 
 	    	   nextX = 970; 
 	    	   t = (nextX - lastPoint.x) / xVel;
 	    	   nextY = lastPoint.y + yVel * t;
 	    	   trajectoryPoints.add(new Point(nextX, nextY));
 	    	   
-	    	   
 	    	   reverseXVel(); 
+	    	    
+	    	   // calculate coordinate after paddle bounce	
+	    	   int yOnPaddle = nextY;
+	    	   int xOnPaddle = nextX;
+	    	   int yAfterPaddleBounce = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT;
+	    	   t = (yAfterPaddleBounce - yOnPaddle) / yVel;
+	    	   int xAfterPaddleBounce = xOnPaddle + xVel * t;
 	    	   
-	    	   // calculate coordinate after paddle bounce
-				
-	    	   int placeholdNextY = nextY;
-	    	   int placeholdNextX = nextX;
-	    	   int placeholdY = 0;
-	    	   int placeholdT = (0 - placeholdNextY) / yVel;
-	    	   int placeholdX = placeholdNextX + xVel * placeholdT;
+	    	   trajectoryPoints.add(new Point(xAfterPaddleBounce, yAfterPaddleBounce));
+	    	   count++;
 	    	   
-	    	   trajectoryPoints.add(new Point(placeholdX, placeholdY));
-	   
 	       } else if(nextX <= 30) {
+	    	   
+	    	   // calculate coordinate on paddle axis using 
 	    	   nextX = 30;
 	    	   t = (nextX - lastPoint.x) / xVel;
 	    	   nextY = lastPoint.y + yVel * t;
@@ -99,19 +97,19 @@ public class TrajectoryLine {
 	    	   reverseXVel(); 
 	    	   
 	    	   // calculate coordinate after paddle bounce
-	    	   int placeholdNextY = nextY;
-	    	   int placeholdNextX = nextX;
-	    	   int placeholdY = Game.GAME_HEIGHT; 
-	    	   int placeholdT = (0 - placeholdNextY) / yVel;
-	    	   int placeholdX = placeholdNextX + xVel * placeholdT;
+	    	   int yOnPaddle = nextY;
+	    	   int xOnPaddle = nextX;
+	    	   int yAfterPaddleBounce = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT;
+	    	   t = (yAfterPaddleBounce - yOnPaddle) / yVel;
+	    	   int xAfterPaddleBounce = xOnPaddle + xVel * t;
 	    	   
-	    	   trajectoryPoints.add(new Point(placeholdX, placeholdY));	    	   
+	    	   trajectoryPoints.add(new Point(xAfterPaddleBounce, yAfterPaddleBounce));	    	   
 	       } else {
-		        trajectoryPoints.add(new Point(nextX, nextY));
+		       trajectoryPoints.add(new Point(nextX, nextY));
 	       }
-	      	        
-	        count++;
-	        //System.out.println(trajectoryColors);
+	      
+	       
+	       // add color
 		}
 		
 	}
@@ -130,10 +128,10 @@ public class TrajectoryLine {
 	public void drawTrajectory(Graphics g) {
 		
 		g.setColor(Color.red);
-		
 		for(int i = 0; i < trajectoryPoints.size() - 1; i++) {			
 			Point initialPoint = trajectoryPoints.get(i);
-			Point finalPoint = trajectoryPoints.get(i + 1);
+			Point finalPoint = trajectoryPoints.get(i + 1);		
+			
 			g.drawLine(initialPoint.x, initialPoint.y, finalPoint.x, finalPoint.y);
 		}
 	}
@@ -146,11 +144,18 @@ public class TrajectoryLine {
 		xVel *= -1;
 	}
 	
+	private Color getRandomColor() {
+		
+		int r = (int) (Math.random() * 256);
+		int g = (int) (Math.random() * 256);
+		int b = (int) (Math.random() * 256);
+		
+		return new Color(r, g, b);
+	}
+	
+	
+	
 
-	
-	
-	
-	
 	
 	
 	
