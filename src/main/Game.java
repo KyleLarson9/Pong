@@ -35,8 +35,6 @@ public class Game implements Runnable {
 	public Game() {
 		
 		initializeClasses();
-		//trajectoryLine.collisionPosition();
-		//trajectoryLine.downRightCollision();
 		trajectoryLine.calculateTrajectoryPoints();
 		
 		panel = new GamePanel(this);
