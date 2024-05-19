@@ -11,15 +11,15 @@ import main.Game;
 public class TrajectoryLine {
     
 	private Ball ball;
+	private Color color;
 	
 	private int xVel, yVel;
 
-	int xInitial = Game.GAME_WIDTH / 2;
-	int yFinal = Game.GAME_HEIGHT;
-	int yInitial;
+	private int yFinal = Game.GAME_HEIGHT;
+	private int yInitial;
 	
 	private ArrayList<Point> trajectoryPoints; 
-	
+	private ArrayList<Color> trajectoryColors;
 	public boolean hitsPaddle;
 	
 	public TrajectoryLine(Ball ball) {
@@ -27,6 +27,7 @@ public class TrajectoryLine {
 		this.yInitial = Ball.randStartPos;
 		
 		trajectoryPoints = new ArrayList<>();
+		trajectoryColors = new ArrayList<>();
 	}
 	
 	public void render(Graphics g) {
@@ -45,7 +46,7 @@ public class TrajectoryLine {
 		yVel = ball.yVel;
 		xVel = ball.xVel;
 		int count = 0;
-		
+        		
 		initialTrajectoryLine(xVel, yVel);
 		
 		while(count < 2) {
@@ -89,12 +90,15 @@ public class TrajectoryLine {
 	        	addPoint(nextX, nextY);
 	        }
 	      
+	        color = getRandomColor();
+	        trajectoryColors.add(color);
 		}
-		
+		System.out.println(trajectoryColors);
+		System.out.println(trajectoryColors.size());
 	}
 	
 	private void initialTrajectoryLine(int xVel, int yVel) {
-		
+        		
 		int xInitial = Game.GAME_WIDTH / 2;
 		
 		int t = (yFinal - yInitial) / yVel;
@@ -106,25 +110,39 @@ public class TrajectoryLine {
 	
 	public void drawTrajectory(Graphics g) {
 		
-		g.setColor(Color.red);
-		for(int i = 0; i < trajectoryPoints.size() - 1; i++) {			
+		// maybe make it a known amount of colors, make a predefined array of colors instead of random and use that?
+		
+		Color newColor;
+		newColor = Color.red;
+		
+		for(int i = 0; i < trajectoryPoints.size() - 1; i++) {	
 			Point initialPoint = trajectoryPoints.get(i);
 			Point finalPoint = trajectoryPoints.get(i + 1);		
 			
+			if(finalPoint.x == 970 || finalPoint.x == 30) {
+				newColor = trajectoryColors.get(i % trajectoryColors.size());
+			}
+			
+			// check if the x coordinate is 970 or 30, then change the color
+			
 			g.drawLine(initialPoint.x, initialPoint.y, finalPoint.x, finalPoint.y);
+	        g.setColor(newColor);
+
 		}
 	}
 	
 	private void addPoint(int x, int y) {
 		trajectoryPoints.add(new Point(x, y));
+        
 	}
 	
 	private void pointAfterPaddle(int xOnPaddle, int yOnPaddle, Point lastPoint) {
 		
- 	   int yAfterPaddleBounce = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT;
-	   int t = (yAfterPaddleBounce - yOnPaddle) / yVel;
-	   int xAfterPaddleBounce = xOnPaddle + xVel * t;
-	   trajectoryPoints.add(new Point(xAfterPaddleBounce, yAfterPaddleBounce));
+		int yAfterPaddleBounce = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT;
+	    int t = (yAfterPaddleBounce - yOnPaddle) / yVel;
+	    int xAfterPaddleBounce = xOnPaddle + xVel * t;
+	    trajectoryPoints.add(new Point(xAfterPaddleBounce, yAfterPaddleBounce));
+        
 	}
 	
 	private void reverseYVel() {
@@ -134,10 +152,7 @@ public class TrajectoryLine {
 	private void reverseXVel() {
 		xVel *= -1;
 	}
-	
-	
-	
-	
+
 	private Color getRandomColor() {
 		
 		int r = (int) (Math.random() * 256);
