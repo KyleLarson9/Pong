@@ -93,19 +93,8 @@ public class TrajectoryLine {
 	        color = getRandomColor();
 	        trajectoryColors.add(color);
 		}
-		System.out.println(trajectoryColors);
-		System.out.println(trajectoryColors.size());
-	}
-	
-	private void initialTrajectoryLine(int xVel, int yVel) {
-        		
-		int xInitial = Game.GAME_WIDTH / 2;
 		
-		int t = (yFinal - yInitial) / yVel;
-		int xFinal = xInitial + xVel * t;
-		
-		trajectoryPoints.add(new Point(xInitial, yInitial));
-		trajectoryPoints.add(new Point(xFinal, yFinal));
+		//System.out.println(trajectoryPoints);
 	}
 	
 	public void drawTrajectory(Graphics g) {
@@ -167,84 +156,43 @@ public class TrajectoryLine {
 
 	
 	
-	
-	
-	
-	
-	
-	
-	
-//	public void collisionPosition() {
+	private void initialTrajectoryLine(int xVel, int yVel) {		
+//		int xInitial = Game.GAME_WIDTH / 2;
 //		
-//		int yInitial = Game.GAME_HEIGHT/2;
-//		int xInitial = Game.GAME_WIDTH/2;
-//		int yVel = ball.yVel;
-//		int xVel = ball.xVel;
-//				
-//		if(ball.yDir < 0 && ball.xDir > 0) { // up to the right
-//			
-//			xFinal2 = 970;
-//			yFinal = 0;
-//			
-//			int t = (yFinal - yInitial + 10) / yVel;
-//			xFinal = xInitial + xVel * t;
-//			
-//			yVel = -yVel;
-//			
-//			int t2 = (xFinal2 - xFinal) / xVel;
-//			yFinal2 = yFinal + yVel * t2;			
-//		} else if(ball.yDir < 0 && ball.xDir < 0) { // up and to the left
-//					
-//			xFinal2 = 30;
-//			yFinal = 0;
-//			
-//			int t = (yFinal - yInitial + 10) / yVel;
-//			xFinal = xInitial + xVel * t;
-//			
-//			yVel = -yVel;
-//			
-//			int t2 = (xFinal2 - xFinal) / xVel;
-//			yFinal2 = yFinal + yVel * t2;			
-//			
-//		} else if(ball.yDir > 0 && ball.xDir > 0) { // down and to the right
-//			
-//			// +xVel, +yVel
-//			
-//			xFinal2 = 970;
-//
-//			yFinal = Game.GAME_HEIGHT;
-//			
-//			int t = (yFinal - yInitial - 10) / yVel;
-//			xFinal = xInitial + xVel * t;
-//
-//			yVel = -yVel;
-//			
-//			int t2 = (xFinal2 - xFinal) / xVel;
-//			yFinal2 = yFinal + yVel * t2;
-//			
-//		} else if(ball.yDir > 0 && ball.xDir < 0) { // down and to the left
-//			
-//			// -xVel, +yVel
-//			
-//			yFinal = Game.GAME_HEIGHT;
-//			xFinal2 = 30;
-//			
-//			int t = (Game.GAME_HEIGHT - yInitial - 10) / yVel;
-//			xFinal = xInitial + xVel * t;
-//			yFinal = Game.GAME_HEIGHT;
-//			
-//			// -xVel, -yVel
-//			
-//			yVel = -yVel;
-//			
-//			int t2 = (30 - xFinal) / xVel;
-//			yFinal2 = yFinal + yVel * t2;
-//			
-//		}
-//		
-//	}
-
-
+//		int t = (yFinal - yInitial) / yVel;
+//		int xFinal = xInitial + xVel * t;
+		
+		int xFinal = 0;
+		int yFinal = 0;
+		int xInitial = Game.GAME_WIDTH / 2;
+		int t;
+		
+		if(yVel < 0 && xVel >0) { // up and to the right
+			
+			yFinal = 0;
+			t = (yFinal - yInitial) / yVel;
+			xFinal = xInitial + xVel * t;
+			
+		} else if(yVel < 0 && xVel < 0) { // up and to the left
+			yFinal = 0;
+			t = (yFinal - yInitial) / yVel;
+			xFinal = xInitial + xVel * t;
+		} else if(yVel > 0 && xVel > 0) { // down and to the right
+			yFinal = Game.GAME_HEIGHT;
+			t = (yFinal - yInitial) / yVel;
+			xFinal = xInitial + xVel * t;
+		} else if(yVel > 0 && xVel < 0) { // down and to the left
+			yFinal = Game.GAME_HEIGHT;
+			t = (yFinal - yInitial) / yVel;
+			xFinal = xInitial + xVel * t;
+		}
+		
+		
+		
+		trajectoryPoints.add(new Point(xInitial, yInitial));
+		trajectoryPoints.add(new Point(xFinal, yFinal));
+	}
+	
 }
 
 

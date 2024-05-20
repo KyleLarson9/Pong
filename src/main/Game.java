@@ -12,6 +12,7 @@ public class Game implements Runnable {
 	private GamePanel panel;
 	
 	public static Player player;
+	public static Player player2;
 	private Ball ball;
 	private TrajectoryLine trajectoryLine;
 	
@@ -49,6 +50,7 @@ public class Game implements Runnable {
 		ball = new Ball(this, (GAME_WIDTH / 2) - (BALL_DIAMETER/2), BALL_DIAMETER, BALL_DIAMETER);
 		trajectoryLine = new TrajectoryLine(ball);
 		player = new Player(970, 0, 20, 540);
+		player2 = new Player(10, 0, 20, 540);
 	}
 	
 	private void startGameLoop() {
@@ -61,6 +63,7 @@ public class Game implements Runnable {
 		ball.render(g);
 		trajectoryLine.render(g);
 		player.render(g);
+		player2.render(g);
 	}
 	
 	public void move() {
@@ -77,6 +80,10 @@ public class Game implements Runnable {
 		}
 		
 		if(ball.intersects(player)) {
+			ball.setXDir(-ball.xVel);
+		}
+		
+		if(ball.intersects(player2)) {
 			ball.setXDir(-ball.xVel);
 		}
 		

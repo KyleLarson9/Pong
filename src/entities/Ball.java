@@ -36,21 +36,19 @@ public class Ball extends Rectangle {
 //	
 	public void getDirection() {
 		
-//		xDir = rand.nextInt(2);
-//		yDir = rand.nextInt(2);
-//		
-//		if(xDir == 0) {
-//			xDir--;
-//		} 
+		xDir = rand.nextInt(2);
+		yDir = rand.nextInt(2);
 		
-		xDir++;
+		if(xDir == 0) {
+			xDir--;
+		} 
+		
 		setXDir(xDir * xVel);
 	
-//		if(yDir == 0) {
-//			yDir--;
-//		}
+		if(yDir == 0) {
+			yDir--;
+		}
 		
-		yDir++;
 		setYDir(yDir * yVel);
 		
 	}
