@@ -15,12 +15,19 @@ public class TrajectoryLine {
 	
 	private int xVel, yVel;
 
-	private int yFinal = Game.GAME_HEIGHT;
 	private int yInitial;
 	
-	private ArrayList<Point> trajectoryPoints; 
+	public  ArrayList<Point> trajectoryPoints; 
 	private ArrayList<Color> trajectoryColors;
 	public boolean hitsPaddle;
+	
+	// Just in case it becomes a problem later on, I don't think it should, it just effects the visuals I think, but if it does
+	// call the calculateTrajectoryPoints in the game constructor. 
+	// The problem I am refering to is that it draws a final line between the last point and initial starting point for some reason
+	
+	// Also, find a way to make it so it regenerats a new y coordinate without having to restart the game
+	
+	// Fix the off centered ball
 	
 	public TrajectoryLine(Ball ball) {
 		this.ball = ball; // comment what this does
@@ -28,6 +35,9 @@ public class TrajectoryLine {
 		
 		trajectoryPoints = new ArrayList<>();
 		trajectoryColors = new ArrayList<>();
+		
+		calculateTrajectoryPoints();
+
 	}
 	
 	public void render(Graphics g) {
@@ -94,13 +104,41 @@ public class TrajectoryLine {
 	        trajectoryColors.add(color);
 		}
 		
-		//System.out.println(trajectoryPoints);
+	}
+	
+	private void initialTrajectoryLine(int xVel, int yVel) {		
+		
+		int xFinal = 0;
+		int yFinal = 0;
+		int xInitial = Game.GAME_WIDTH / 2;
+		int t;
+		
+		if(yVel < 0 && xVel >0) { // up and to the right
+			
+			yFinal = 0;
+			t = (yFinal - yInitial) / yVel;
+			xFinal = xInitial + xVel * t;
+			
+		} else if(yVel < 0 && xVel < 0) { // up and to the left
+			yFinal = 0;
+			t = (yFinal - yInitial) / yVel;
+			xFinal = xInitial + xVel * t;
+		} else if(yVel > 0 && xVel > 0) { // down and to the right
+			yFinal = Game.GAME_HEIGHT;
+			t = (yFinal - yInitial) / yVel;
+			xFinal = xInitial + xVel * t;
+		} else if(yVel > 0 && xVel < 0) { // down and to the left
+			yFinal = Game.GAME_HEIGHT;
+			t = (yFinal - yInitial) / yVel;
+			xFinal = xInitial + xVel * t;
+		}
+		
+		trajectoryPoints.add(new Point(xInitial, yInitial));
+		trajectoryPoints.add(new Point(xFinal, yFinal));
 	}
 	
 	public void drawTrajectory(Graphics g) {
-		
-		// maybe make it a known amount of colors, make a predefined array of colors instead of random and use that?
-		
+				
 		Color newColor;
 		newColor = Color.red;
 		
@@ -122,7 +160,6 @@ public class TrajectoryLine {
 	
 	private void addPoint(int x, int y) {
 		trajectoryPoints.add(new Point(x, y));
-        
 	}
 	
 	private void pointAfterPaddle(int xOnPaddle, int yOnPaddle, Point lastPoint) {
@@ -151,60 +188,5 @@ public class TrajectoryLine {
 		return new Color(r, g, b);
 	}
 	
-	
-	
-
-	
-	
-	private void initialTrajectoryLine(int xVel, int yVel) {		
-//		int xInitial = Game.GAME_WIDTH / 2;
-//		
-//		int t = (yFinal - yInitial) / yVel;
-//		int xFinal = xInitial + xVel * t;
-		
-		int xFinal = 0;
-		int yFinal = 0;
-		int xInitial = Game.GAME_WIDTH / 2;
-		int t;
-		
-		if(yVel < 0 && xVel >0) { // up and to the right
-			
-			yFinal = 0;
-			t = (yFinal - yInitial) / yVel;
-			xFinal = xInitial + xVel * t;
-			
-		} else if(yVel < 0 && xVel < 0) { // up and to the left
-			yFinal = 0;
-			t = (yFinal - yInitial) / yVel;
-			xFinal = xInitial + xVel * t;
-		} else if(yVel > 0 && xVel > 0) { // down and to the right
-			yFinal = Game.GAME_HEIGHT;
-			t = (yFinal - yInitial) / yVel;
-			xFinal = xInitial + xVel * t;
-		} else if(yVel > 0 && xVel < 0) { // down and to the left
-			yFinal = Game.GAME_HEIGHT;
-			t = (yFinal - yInitial) / yVel;
-			xFinal = xInitial + xVel * t;
-		}
-		
-		
-		
-		trajectoryPoints.add(new Point(xInitial, yInitial));
-		trajectoryPoints.add(new Point(xFinal, yFinal));
-	}
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

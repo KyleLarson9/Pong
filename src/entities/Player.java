@@ -2,7 +2,11 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+
+import main.Game;
 
 // for the player, loop through the arraylist finding the points on the paddle axis and going to that first one
 // wait until the ball hits, then move to the next one
@@ -13,8 +17,14 @@ import java.awt.Rectangle;
 
 public class Player extends Rectangle {
 	
-	public Player(int x, int y, int width, int height) {
+	private TrajectoryLine trajectoryLine;
+
+	public Player(TrajectoryLine trajectoryLine, int x, int y, int width, int height) {
 		super(x, y, width, height);
+		this.trajectoryLine = trajectoryLine;
+		
+		//System.out.println(trajectoryLine.trajectoryPoints);
+		
 	} 
 	
 	public void render(Graphics g) {

@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.Graphics;
+import java.awt.Point;
+import java.util.ArrayList;
 
 import entities.Ball;
 import entities.Player;
@@ -14,13 +16,13 @@ public class Game implements Runnable {
 	public static Player player;
 	public static Player player2;
 	private Ball ball;
-	private TrajectoryLine trajectoryLine;
+	public TrajectoryLine trajectoryLine;
 	
 	private Thread gameThread;
 	private boolean running = true;
 	 
 	private final int FPS = 120;
-	private final int UPS = 200;
+	private final int UPS = 120;
 	
 	
 	private final static int TILES_DEFAULT_SIZE = 20;
@@ -31,26 +33,29 @@ public class Game implements Runnable {
 	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
 	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 	
-	public final static int BALL_DIAMETER = (int) (20 * SCALE);
+	public final static int BALL_DIAMETER = (int) (15 * SCALE);
 	
 	public Game() {
 		
-		initializeClasses();
-		trajectoryLine.calculateTrajectoryPoints();
-		
+		initializeClasses();		
+				
 		panel = new GamePanel(this);
 		frame = new GameFrame(panel);
 		panel.setFocusable(true);
 		panel.requestFocus();
 		startGameLoop();
 		
+		//System.out.println(trajectoryLine.trajectoryPoints);
+		
 	}
 	
 	private void initializeClasses() {
 		ball = new Ball(this, (GAME_WIDTH / 2) - (BALL_DIAMETER/2), BALL_DIAMETER, BALL_DIAMETER);
+		//player2 = new Player(10, 0, 20, 540);
+		
 		trajectoryLine = new TrajectoryLine(ball);
-		player = new Player(970, 0, 20, 540);
-		player2 = new Player(10, 0, 20, 540);
+		player = new Player(trajectoryLine, 970, 100, 20, 120);
+
 	}
 	
 	private void startGameLoop() {
@@ -63,7 +68,7 @@ public class Game implements Runnable {
 		ball.render(g);
 		trajectoryLine.render(g);
 		player.render(g);
-		player2.render(g);
+		//player2.render(g);
 	}
 	
 	public void move() {
@@ -83,9 +88,9 @@ public class Game implements Runnable {
 			ball.setXDir(-ball.xVel);
 		}
 		
-		if(ball.intersects(player2)) {
-			ball.setXDir(-ball.xVel);
-		}
+//		if(ball.intersects(player2)) {
+//			ball.setXDir(-ball.xVel);
+//		}
 		
 		if(ball.x > GAME_WIDTH || ball.x < 0) {
 			initializeClasses();
@@ -156,9 +161,6 @@ public class Game implements Runnable {
 		}
 	}
 	
-//	public Player getPlayer() {
-//		return player; // describe what is happening 
-//	}
 }
 
 
