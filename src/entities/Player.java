@@ -18,18 +18,53 @@ import main.Game;
 public class Player extends Rectangle {
 	
 	private TrajectoryLine trajectoryLine;
-
+	
+	private ArrayList<Point> axisPoints;
+	
 	public Player(TrajectoryLine trajectoryLine, int x, int y, int width, int height) {
 		super(x, y, width, height);
 		this.trajectoryLine = trajectoryLine;
 		
-		//System.out.println(trajectoryLine.trajectoryPoints);
+		axisPoints = new ArrayList<>();
 		
+		System.out.println(trajectoryLine.trajectoryPoints);
+		System.out.println(trajectoryLine.trajectoryPoints.size());
+		
+		System.out.println("Points on axis: ");
+		getAxisPoints();
+		
+		System.out.println(axisPoints);
 	} 
+	
+	// public methods
 	
 	public void render(Graphics g) {
 		g.setColor(Color.blue);
 		g.drawRect(x, y, width, height);
+	}
+	
+	public void move() {
+		
+		// loop through the axisPoints array
+		// move the center of the paddle to that y coordinate
+		// move to the next point
+		
+	}
+	
+	// private methods
+	
+	private void getAxisPoints() {
+				
+		ArrayList<Point> trajectoryPoints = trajectoryLine.trajectoryPoints;
+		
+		for(int i = 0; i < trajectoryPoints.size(); i++) {
+			
+			if(trajectoryPoints.get(i).x == 970) {
+				axisPoints.add(trajectoryPoints.get(i));
+			}
+			
+		}
+		
 	}
 	
 }

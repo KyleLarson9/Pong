@@ -8,6 +8,16 @@ import java.util.ArrayList;
 
 import main.Game;
 
+	//Just in case it becomes a problem later on, I don't think it should, it just effects the visuals I think, but if it does
+	// call the calculateTrajectoryPoints in the game constructor. 
+	// The problem I am refering to is that it draws a final line between the last point and initial starting point for some reason
+	// If it turns into a problem and I can't fix it go to commit 7 randomized ball directions
+	
+	
+	// Also, find a way to make it so it regenerats a new y coordinate without having to restart the game
+	
+	// Fix the off centered ball
+	
 public class TrajectoryLine {
     
 	private Ball ball;
@@ -20,17 +30,9 @@ public class TrajectoryLine {
 	public  ArrayList<Point> trajectoryPoints; 
 	private ArrayList<Color> trajectoryColors;
 	public boolean hitsPaddle;
-	
-	// Just in case it becomes a problem later on, I don't think it should, it just effects the visuals I think, but if it does
-	// call the calculateTrajectoryPoints in the game constructor. 
-	// The problem I am refering to is that it draws a final line between the last point and initial starting point for some reason
-	
-	// Also, find a way to make it so it regenerats a new y coordinate without having to restart the game
-	
-	// Fix the off centered ball
-	
+
 	public TrajectoryLine(Ball ball) {
-		this.ball = ball; // comment what this does
+		this.ball = ball; 
 		this.yInitial = Ball.randStartPos;
 		
 		trajectoryPoints = new ArrayList<>();
@@ -39,6 +41,8 @@ public class TrajectoryLine {
 		calculateTrajectoryPoints();
 
 	}
+	
+	// public methods
 	
 	public void render(Graphics g) {
 		
@@ -56,10 +60,13 @@ public class TrajectoryLine {
 		yVel = ball.yVel;
 		xVel = ball.xVel;
 		int count = 0;
-        		
+        
+		int paddle2Axis = 970;
+		int paddle1Axis = 30;
+		
 		initialTrajectoryLine(xVel, yVel);
 		
-		while(count < 2) {
+		while(count < 3) {
 			
 			reverseYVel();
 			
@@ -72,10 +79,10 @@ public class TrajectoryLine {
 	        nextX = lastPoint.x + xVel * t;
 	        	        
 	        // check if it intersects paddle:
-	        if(nextX >= 970) {
+	        if(nextX >= paddle2Axis) {
 	    
 	        	// calculate coordinate on paddle axis using 
-	        	nextX = 970; 
+	        	nextX = paddle2Axis; 
 	        	t = (nextX - lastPoint.x) / xVel;
 	        	nextY = lastPoint.y + yVel * t;
 	        	
@@ -85,10 +92,10 @@ public class TrajectoryLine {
 	    	   
 	    	    count++;
 	    	   
-	        } else if(nextX <= 30) {
+	        } else if(nextX <= paddle1Axis) {
 	    	   
 	        	// calculate coordinate on paddle axis using 
-	    	    nextX = 30;
+	    	    nextX = paddle1Axis;
 	    	    t = (nextX - lastPoint.x) / xVel;
 	    	    nextY = lastPoint.y + yVel * t;
 	    	    
@@ -105,6 +112,8 @@ public class TrajectoryLine {
 		}
 		
 	}
+	
+	// private methods
 	
 	private void initialTrajectoryLine(int xVel, int yVel) {		
 		
@@ -137,8 +146,21 @@ public class TrajectoryLine {
 		trajectoryPoints.add(new Point(xFinal, yFinal));
 	}
 	
-	public void drawTrajectory(Graphics g) {
-				
+	private void pointAfterPaddle(int xOnPaddle, int yOnPaddle, Point lastPoint) {
+		
+		int yAfterPaddleBounce = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT;
+	    int t = (yAfterPaddleBounce - yOnPaddle) / yVel;
+	    int xAfterPaddleBounce = xOnPaddle + xVel * t;
+	    trajectoryPoints.add(new Point(xAfterPaddleBounce, yAfterPaddleBounce));
+        
+	}
+
+	private void addPoint(int x, int y) {
+		trajectoryPoints.add(new Point(x, y));
+	}
+	
+	private void drawTrajectory(Graphics g) {
+		
 		Color newColor;
 		newColor = Color.red;
 		
@@ -149,26 +171,11 @@ public class TrajectoryLine {
 			if(finalPoint.x == 970 || finalPoint.x == 30) {
 				newColor = trajectoryColors.get(i % trajectoryColors.size());
 			}
-			
-			// check if the x coordinate is 970 or 30, then change the color
-			
+						
 			g.drawLine(initialPoint.x, initialPoint.y, finalPoint.x, finalPoint.y);
 	        g.setColor(newColor);
 
 		}
-	}
-	
-	private void addPoint(int x, int y) {
-		trajectoryPoints.add(new Point(x, y));
-	}
-	
-	private void pointAfterPaddle(int xOnPaddle, int yOnPaddle, Point lastPoint) {
-		
-		int yAfterPaddleBounce = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT;
-	    int t = (yAfterPaddleBounce - yOnPaddle) / yVel;
-	    int xAfterPaddleBounce = xOnPaddle + xVel * t;
-	    trajectoryPoints.add(new Point(xAfterPaddleBounce, yAfterPaddleBounce));
-        
 	}
 	
 	private void reverseYVel() {

@@ -14,9 +14,7 @@ public class Ball extends Rectangle {
 	public int xVel = 1;
 	public int yVel = 3;
 	public int xDir, yDir;
-	
-	public int radius = 10;
-	
+		
 	public static int randStartPos = rand.nextInt(Game.GAME_HEIGHT - 20);
 	
 	
@@ -25,15 +23,13 @@ public class Ball extends Rectangle {
 		getDirection();
 	}
 	
+	// public methods
+	
 	public void render(Graphics g) {		
 		g.setColor(Color.white);
 		g.fillOval(x, y, width, height);
 	}
 	 
-//	public void getRandomStart() {
-//		randStartPos = rand.nextInt(Game.GAME_HEIGHT - 20); 
-//	}
-//	
 	public void getDirection() {
 		
 		xDir = rand.nextInt(2);
@@ -60,6 +56,7 @@ public class Ball extends Rectangle {
 	public void setYDir(int yDir) {
 		yVel = yDir;
 	}
+	
 	public void move() {
 		x+=xVel;
 		y+=yVel;

@@ -22,7 +22,7 @@ public class Game implements Runnable {
 	private boolean running = true;
 	 
 	private final int FPS = 120;
-	private final int UPS = 120;
+	private final int UPS = 70;
 	
 	
 	private final static int TILES_DEFAULT_SIZE = 20;
@@ -49,10 +49,23 @@ public class Game implements Runnable {
 		
 	}
 	
+	// public methods
+	
+	public void move() {
+		ball.move();
+	}
+	
+	public void render(Graphics g) {
+		grid(g);
+		ball.render(g);
+		trajectoryLine.render(g);
+		player.render(g);
+	}
+	
+	// private methods
+	
 	private void initializeClasses() {
-		ball = new Ball(this, (GAME_WIDTH / 2) - (BALL_DIAMETER/2), BALL_DIAMETER, BALL_DIAMETER);
-		//player2 = new Player(10, 0, 20, 540);
-		
+		ball = new Ball(this, (GAME_WIDTH / 2) - (BALL_DIAMETER/2), BALL_DIAMETER, BALL_DIAMETER);	
 		trajectoryLine = new TrajectoryLine(ball);
 		player = new Player(trajectoryLine, 970, 100, 20, 120);
 
@@ -63,19 +76,7 @@ public class Game implements Runnable {
 		gameThread.start();
 	}
 	
-	public void render(Graphics g) {
-		grid(g);
-		ball.render(g);
-		trajectoryLine.render(g);
-		player.render(g);
-		//player2.render(g);
-	}
-	
-	public void move() {
-		ball.move();
-	}
-	
-	public void checkCollision() {
+	private void checkCollision() {
 		
 		if(ball.y <= 0) {
 			ball.setYDir(-ball.yVel);
@@ -88,13 +89,8 @@ public class Game implements Runnable {
 			ball.setXDir(-ball.xVel);
 		}
 		
-//		if(ball.intersects(player2)) {
-//			ball.setXDir(-ball.xVel);
-//		}
-		
 		if(ball.x > GAME_WIDTH || ball.x < 0) {
 			initializeClasses();
-			trajectoryLine.calculateTrajectoryPoints();
 		
 		}
 		
@@ -115,6 +111,8 @@ public class Game implements Runnable {
 //		}
 		
 	}
+	
+	// override methoods
 	
 	@Override
 	public void run() {
