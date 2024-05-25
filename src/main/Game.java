@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Game implements Runnable {
 	private boolean running = true;
 	 
 	private final int FPS = 120;
-	private final int UPS = 70;
+	private final int UPS = 1;
 	
 	
 	private final static int TILES_DEFAULT_SIZE = 20;
@@ -33,7 +34,7 @@ public class Game implements Runnable {
 	public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
 	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 	
-	public final static int BALL_DIAMETER = (int) (15 * SCALE);
+	public final static int BALL_DIAMETER = (int) (16 * SCALE);
 	
 	public Game() {
 		
@@ -44,25 +45,24 @@ public class Game implements Runnable {
 		panel.setFocusable(true);
 		panel.requestFocus();
 		startGameLoop();
-		
-		//System.out.println(trajectoryLine.trajectoryPoints);
-		
+				
 	}
 	
 	// public methods
-	
-	public void move() {
-		ball.move();
-	}
 	
 	public void render(Graphics g) {
 		grid(g);
 		ball.render(g);
 		trajectoryLine.render(g);
 		player.render(g);
+
 	}
 	
 	// private methods
+	
+	private void move() {
+		ball.move();		
+	}
 	
 	private void initializeClasses() {
 		ball = new Ball(this, (GAME_WIDTH / 2) - (BALL_DIAMETER/2), BALL_DIAMETER, BALL_DIAMETER);	
@@ -151,7 +151,6 @@ public class Game implements Runnable {
 			
 			if(System.currentTimeMillis() - lastCheck >= 1000) {
 				lastCheck = System.currentTimeMillis();
-				//System.out.println(frames + " FPS " + updates + "UPS");
 				frames = 0;
 				updates = 0;
 			}
@@ -160,21 +159,4 @@ public class Game implements Runnable {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

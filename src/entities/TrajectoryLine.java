@@ -15,9 +15,7 @@ import main.Game;
 	
 	
 	// Also, find a way to make it so it regenerats a new y coordinate without having to restart the game
-	
-	// Fix the off centered ball
-	
+		
 public class TrajectoryLine {
     
 	private Ball ball;
@@ -33,7 +31,7 @@ public class TrajectoryLine {
 
 	public TrajectoryLine(Ball ball) {
 		this.ball = ball; 
-		this.yInitial = Ball.randStartPos;
+		this.yInitial = Ball.randYStart + (Game.BALL_DIAMETER/2);
 		
 		trajectoryPoints = new ArrayList<>();
 		trajectoryColors = new ArrayList<>();
@@ -46,7 +44,7 @@ public class TrajectoryLine {
 	
 	public void render(Graphics g) {
 		
-		drawTrajectory(g);
+		drawTrajectory(g); 
 		
 	}
 	
@@ -123,11 +121,9 @@ public class TrajectoryLine {
 		int t;
 		
 		if(yVel < 0 && xVel >0) { // up and to the right
-			
 			yFinal = 0;
 			t = (yFinal - yInitial) / yVel;
 			xFinal = xInitial + xVel * t;
-			
 		} else if(yVel < 0 && xVel < 0) { // up and to the left
 			yFinal = 0;
 			t = (yFinal - yInitial) / yVel;
@@ -171,9 +167,10 @@ public class TrajectoryLine {
 			if(finalPoint.x == 970 || finalPoint.x == 30) {
 				newColor = trajectoryColors.get(i % trajectoryColors.size());
 			}
-						
-			g.drawLine(initialPoint.x, initialPoint.y, finalPoint.x, finalPoint.y);
+
 	        g.setColor(newColor);
+
+			g.drawLine(initialPoint.x, initialPoint.y, finalPoint.x, finalPoint.y);
 
 		}
 	}
@@ -194,6 +191,5 @@ public class TrajectoryLine {
 		
 		return new Color(r, g, b);
 	}
-	
 }
 
