@@ -3,7 +3,6 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import main.Game;
@@ -59,18 +58,18 @@ public class TrajectoryLine {
 		xVel = ball.xVel;
 		int count = 0;
         
-		int paddle2Axis = 970;
-		int paddle1Axis = 30;
+		int paddle2Axis = 970 - (Game.BALL_DIAMETER/2);
+		int paddle1Axis = 30 + (Game.BALL_DIAMETER/2);
 		
 		initialTrajectoryLine(xVel, yVel);
 		
-		while(count < 3) {
+		while(count < 2) {
 			
 			reverseYVel();
 			
 			Point lastPoint = trajectoryPoints.get(trajectoryPoints.size() - 1); // gets the last point
 			
-			nextY = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT; // alternate y coordinate
+			nextY = (lastPoint.y == (Game.GAME_HEIGHT - (Game.BALL_DIAMETER/2))) ? (0 + (Game.BALL_DIAMETER/2)) : (Game.GAME_HEIGHT - (Game.BALL_DIAMETER/2)); // alternate y coordinate
 			
 			// calculate x coordinate
 			t = (nextY - lastPoint.y) / yVel;   
@@ -121,19 +120,19 @@ public class TrajectoryLine {
 		int t;
 		
 		if(yVel < 0 && xVel >0) { // up and to the right
-			yFinal = 0;
+			yFinal = 0 + (Game.BALL_DIAMETER/2);
 			t = (yFinal - yInitial) / yVel;
 			xFinal = xInitial + xVel * t;
 		} else if(yVel < 0 && xVel < 0) { // up and to the left
-			yFinal = 0;
+			yFinal = 0 + (Game.BALL_DIAMETER/2);
 			t = (yFinal - yInitial) / yVel;
 			xFinal = xInitial + xVel * t;
 		} else if(yVel > 0 && xVel > 0) { // down and to the right
-			yFinal = Game.GAME_HEIGHT;
+			yFinal = Game.GAME_HEIGHT - (Game.BALL_DIAMETER/2);
 			t = (yFinal - yInitial) / yVel;
 			xFinal = xInitial + xVel * t;
 		} else if(yVel > 0 && xVel < 0) { // down and to the left
-			yFinal = Game.GAME_HEIGHT;
+			yFinal = Game.GAME_HEIGHT - (Game.BALL_DIAMETER/2);
 			t = (yFinal - yInitial) / yVel;
 			xFinal = xInitial + xVel * t;
 		}
@@ -144,7 +143,7 @@ public class TrajectoryLine {
 	
 	private void pointAfterPaddle(int xOnPaddle, int yOnPaddle, Point lastPoint) {
 		
-		int yAfterPaddleBounce = (lastPoint.y == Game.GAME_HEIGHT) ? 0 : Game.GAME_HEIGHT;
+		int yAfterPaddleBounce = (lastPoint.y == (Game.GAME_HEIGHT - (Game.BALL_DIAMETER/2))) ? (0 + (Game.BALL_DIAMETER/2)) : (Game.GAME_HEIGHT - (Game.BALL_DIAMETER/2));
 	    int t = (yAfterPaddleBounce - yOnPaddle) / yVel;
 	    int xAfterPaddleBounce = xOnPaddle + xVel * t;
 	    trajectoryPoints.add(new Point(xAfterPaddleBounce, yAfterPaddleBounce));
@@ -164,13 +163,12 @@ public class TrajectoryLine {
 			Point initialPoint = trajectoryPoints.get(i);
 			Point finalPoint = trajectoryPoints.get(i + 1);		
 			
-			if(finalPoint.x == 970 || finalPoint.x == 30) {
+			if(finalPoint.x == 970 - (Game.BALL_DIAMETER/2) || finalPoint.x == 30 + (Game.BALL_DIAMETER/2)) {
 				newColor = trajectoryColors.get(i % trajectoryColors.size());
 			}
-
-	        g.setColor(newColor);
-
+			
 			g.drawLine(initialPoint.x, initialPoint.y, finalPoint.x, finalPoint.y);
+	        g.setColor(newColor);
 
 		}
 	}
