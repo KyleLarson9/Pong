@@ -1,10 +1,10 @@
 package main;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.util.ArrayList;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
+import entities.AI;
 import entities.Ball;
 import entities.Player;
 import entities.TrajectoryLine;
@@ -15,7 +15,7 @@ public class Game implements Runnable {
 	private GamePanel panel;
 	
 	public static Player player;
-	public static Player player2;
+	private AI ai;
 	private Ball ball;
 	public TrajectoryLine trajectoryLine;
 	
@@ -23,7 +23,7 @@ public class Game implements Runnable {
 	private boolean running = true;
 	 
 	private final int FPS = 120;
-	private final int UPS = 1;
+	private final int UPS = 60;
 	
 	
 	private final static int TILES_DEFAULT_SIZE = 20;
@@ -36,6 +36,8 @@ public class Game implements Runnable {
 	
 	public final static int BALL_DIAMETER = (int) (16 * SCALE);
 	
+	private final int PLAYER_HEIGHT = 120;
+	private final int PLAYER_WIDTH = 20;
 	public Game() {
 		
 		initializeClasses();		
@@ -44,6 +46,7 @@ public class Game implements Runnable {
 		frame = new GameFrame(panel);
 		panel.setFocusable(true);
 		panel.requestFocus();
+		panel.addKeyListener(new AL());
 		startGameLoop();
 				
 	}
@@ -52,23 +55,25 @@ public class Game implements Runnable {
 	
 	public void render(Graphics g) {
 		grid(g);
+		player.render(g);
 		ball.render(g);
 		trajectoryLine.render(g);
-		player.render(g);
-
+		ai.render(g);
 	}
 	
 	// private methods
 	
 	private void move() {
-		ball.move();		
+		player.move();
+		ball.move();
+		ai.move();
 	}
 	
 	private void initializeClasses() {
 		ball = new Ball(this, (GAME_WIDTH / 2) - (BALL_DIAMETER/2), BALL_DIAMETER, BALL_DIAMETER);	
 		trajectoryLine = new TrajectoryLine(ball);
-		player = new Player(trajectoryLine, 970, 100, 20, 120);
-
+		ai = new AI(trajectoryLine, 970, GAME_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT);
+		player = new Player(10, GAME_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT);
 	}
 	
 	private void startGameLoop() {
@@ -83,9 +88,13 @@ public class Game implements Runnable {
 		}
 		if(ball.y >= GAME_HEIGHT - BALL_DIAMETER) {
 			ball.setYDir(-ball.yVel);
-		}
+		} 
 		
 		if(ball.intersects(player)) {
+			ball.setXDir(-ball.xVel);
+		}
+		
+		if(ball.intersects(ai)) {
 			ball.setXDir(-ball.xVel);
 		}
 		
@@ -94,7 +103,15 @@ public class Game implements Runnable {
 		
 		}
 		
-	}
+		if(player.y >= GAME_HEIGHT - PLAYER_HEIGHT)
+			player.y = GAME_HEIGHT - PLAYER_HEIGHT;
+		if(player.y <= 0)
+			player.y = 0;
+		
+		if(ai.y >= GAME_HEIGHT - PLAYER_HEIGHT)
+			ai.y = GAME_HEIGHT - PLAYER_HEIGHT;
+		if(ai.y <= 0)
+			ai.y = 0;	}
 	
 	private void grid(Graphics g) {
 		
@@ -137,7 +154,6 @@ public class Game implements Runnable {
 			
 			if(deltaU >= 1) {
 				move();		
-		    	
 				checkCollision();
 				updates++;
 				deltaU--;
@@ -158,5 +174,15 @@ public class Game implements Runnable {
 		}
 	}
 	
+	public class AL extends KeyAdapter {
+		public void keyPressed(KeyEvent e) {
+			player.keyPressed(e);
+	        
+		}
+		public void keyReleased(KeyEvent e) {
+			player.keyReleased(e);
+		
+		}
+	}
 }
 

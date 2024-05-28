@@ -47,6 +47,8 @@ public class TrajectoryLine {
 		
 	}
 	
+	// make the diameter odd, those are throwing off the calculations
+	
 	// edge case, if it doesn't hit a floor/ceiling first
 	
 	public void calculateTrajectoryPoints() {

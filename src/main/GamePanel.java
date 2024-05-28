@@ -6,8 +6,6 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import inputs.KeyboardInputs;
-
 public class GamePanel extends JPanel {
 
 	private Game game;
