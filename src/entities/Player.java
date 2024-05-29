@@ -13,7 +13,7 @@ public class Player extends Rectangle {
 	
 	private boolean moving;
 	private boolean up, down;
-	private int playerSpeed = 2;
+	private int speed = 2;
 	
 	public Player(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -35,10 +35,10 @@ public class Player extends Rectangle {
 		moving = false;
 		
 		if(up && !down) {
-			y -= playerSpeed;
+			y -= speed;
 			moving = true;
 		} else if(down && !up) {
-			y += playerSpeed;
+			y += speed;
 			moving = true;
 		}
 		

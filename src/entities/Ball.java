@@ -12,7 +12,7 @@ public class Ball extends Rectangle {
 	private static Random rand = new Random();
 	
 	public int xVel = 1;
-	public int yVel = 3;
+	public int yVel = 2;
 	public int xDir, yDir;
 				
 	public static int randYStart = rand.nextInt(Game.GAME_HEIGHT - Game.BALL_DIAMETER);
@@ -21,9 +21,7 @@ public class Ball extends Rectangle {
 		super(xPos, randYStart, BALL_WIDTH, BALL_HEIGHT);
 		getDirection();
 	}
-	
-	
-	
+
 	// public methods
 	
 	public void render(Graphics g) {		

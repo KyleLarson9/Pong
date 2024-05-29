@@ -46,9 +46,7 @@ public class TrajectoryLine {
 		drawTrajectory(g); 
 		
 	}
-	
-	// make the diameter odd, those are throwing off the calculations
-	
+		
 	// edge case, if it doesn't hit a floor/ceiling first
 	
 	public void calculateTrajectoryPoints() {
@@ -65,7 +63,7 @@ public class TrajectoryLine {
 		
 		initialTrajectoryLine(xVel, yVel);
 		
-		while(count < 2) {
+		while(count < 20) {
 			
 			reverseYVel();
 			

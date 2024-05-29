@@ -23,7 +23,7 @@ public class Game implements Runnable {
 	private boolean running = true;
 	 
 	private final int FPS = 120;
-	private final int UPS = 60;
+	private final int UPS = 200;
 	
 	
 	private final static int TILES_DEFAULT_SIZE = 20;
@@ -54,10 +54,9 @@ public class Game implements Runnable {
 	// public methods
 	
 	public void render(Graphics g) {
-		grid(g);
 		player.render(g);
 		ball.render(g);
-		trajectoryLine.render(g);
+		//trajectoryLine.render(g);
 		ai.render(g);
 	}
 	
@@ -72,7 +71,7 @@ public class Game implements Runnable {
 	private void initializeClasses() {
 		ball = new Ball(this, (GAME_WIDTH / 2) - (BALL_DIAMETER/2), BALL_DIAMETER, BALL_DIAMETER);	
 		trajectoryLine = new TrajectoryLine(ball);
-		ai = new AI(trajectoryLine, 970, GAME_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT);
+		ai = new AI(ball, trajectoryLine, 970, GAME_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT);
 		player = new Player(10, GAME_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT);
 	}
 	
@@ -111,23 +110,10 @@ public class Game implements Runnable {
 		if(ai.y >= GAME_HEIGHT - PLAYER_HEIGHT)
 			ai.y = GAME_HEIGHT - PLAYER_HEIGHT;
 		if(ai.y <= 0)
-			ai.y = 0;	}
-	
-	private void grid(Graphics g) {
-		
-//		for(int i = 0; i < GAME_WIDTH; i++) {
-//			for(int j = 0; j < GAME_HEIGHT; j++) {
-//				int x = i * TILES_SIZE;
-//				int y = j * TILES_SIZE;
-//				if((i + j) % 2 ==0) {
-//					g.drawLine(0, y, GAME_WIDTH, y);
-//				} else {
-//					g.drawLine(x, 0, x, GAME_HEIGHT);
-//				}
-//			}
-//		}
-		
+			ai.y = 0;	
 	}
+	
+
 	
 	// override methoods
 	
