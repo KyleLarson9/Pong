@@ -38,6 +38,7 @@ public class Game implements Runnable {
 	
 	private final int PLAYER_HEIGHT = 120;
 	private final int PLAYER_WIDTH = 20;
+	
 	public Game() {
 		
 		initializeClasses();		

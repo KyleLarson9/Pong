@@ -7,14 +7,8 @@ import java.util.ArrayList;
 
 import main.Game;
 
-	//Just in case it becomes a problem later on, I don't think it should, it just effects the visuals I think, but if it does
-	// call the calculateTrajectoryPoints in the game constructor. 
-	// The problem I am refering to is that it draws a final line between the last point and initial starting point for some reason
-	// If it turns into a problem and I can't fix it go to commit 7 randomized ball directions
-	
-	
-	// Also, find a way to make it so it regenerats a new y coordinate without having to restart the game
-		
+	// edge case, if it doesn't hit a floor/ceiling first
+
 public class TrajectoryLine {
     
 	private Ball ball;
@@ -46,8 +40,6 @@ public class TrajectoryLine {
 		drawTrajectory(g); 
 		
 	}
-		
-	// edge case, if it doesn't hit a floor/ceiling first
 	
 	public void calculateTrajectoryPoints() {
 	

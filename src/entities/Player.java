@@ -5,10 +5,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-// for the player, loop through the arraylist finding the points on the paddle axis and going to that first one
-// wait until the ball hits, then move to the next one
-// for a more advanced one, make it aware of the surrounding points 
-
 public class Player extends Rectangle {
 	
 	private boolean moving;

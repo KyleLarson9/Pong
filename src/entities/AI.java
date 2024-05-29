@@ -45,9 +45,6 @@ public class AI extends Rectangle {
 	    	y+=speed;
 	    }
 	    
-	    // this won't work because if it is close to the wall it won't get the center
-	    // current index++ when the ball hits the paddle!
-	    
 	    if(ball.intersects(this)) {
 	    	currentTargetIndex++;
 	    }
@@ -55,7 +52,6 @@ public class AI extends Rectangle {
 
 	}
 
-	
 	private void getAxisPoints() {
 		for(int i = 0; i < trajectoryLine.trajectoryPoints.size(); i++) {
 			if(trajectoryLine.trajectoryPoints.get(i).x == 970 - 8) {
